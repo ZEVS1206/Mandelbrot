@@ -8,6 +8,10 @@ const int width = 2000;
 const int height = 1600;
 const int max_iterations = 1000;
 const int max_distance = 4;
+// const float scale = 0.003f;
+// const float scale_y = 0.003f;
+// const float offset_x = 0.0f;
+// const float offset_y = 0.0f;
 static sf::Color getColor(int iterations);
 static int check_mandelbrot(float x, float y);
 
@@ -82,7 +86,12 @@ static sf::Color getColor(int iterations)
 
 Errors mandelbrot_main_function()
 {
+    float scale = 0.003f;
+    float offset_x = 0.0f;
+    float offset_y = 0.0f;    
+    bool change = false;
     sf::RenderWindow window(sf::VideoMode(width, height), "Mandelbrot System");
+    window.setFramerateLimit(30);
 
     sf::Image image;
     image.create(width, height, sf::Color::Black);
@@ -96,17 +105,6 @@ Errors mandelbrot_main_function()
     sf::Sprite sprite;
     float center_x = width / 2;
     float center_y = height / 2;
-    float scale = 0.003f;
-    for (int ix = 0; ix < width; ix++)
-    {
-        for (int iy = 0; iy < height; iy++)
-        {
-            float x = (ix - width / 2.0f) * scale;
-            float y = (iy - height / 2.0f) * scale;
-            int iterations = check_mandelbrot(x, y);
-            image.setPixel(ix, iy, getColor(iterations));
-        }
-    }
 
     sf::Text fpsText;
     fpsText.setFont(font);
@@ -115,15 +113,9 @@ Errors mandelbrot_main_function()
     fpsText.setPosition(10, 10);
 
     sf::Clock clock;
-    float lastTime = 0;
-    int frameCount = 0;
+    float last_time = 0;
+    int frame_count = 0;
 
-    if (!texture.loadFromImage(image))
-    {
-        return ERROR_OF_DRAW_PICTURE;
-    }
-
-    sprite.setTexture(texture);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -132,14 +124,65 @@ Errors mandelbrot_main_function()
                 window.close();
             }
         }
-        
-        float currentTime = clock.getElapsedTime().asSeconds();
-        frameCount++;
-        if (currentTime - lastTime >= 1.0f) 
+        // switch (event.type) 
+        // {
+        //     case sf::Event::Closed:
+        //         window.close();
+        //         break;
+        //     case sf::Event::KeyPressed:
+        //         change = true;
+        //         switch (event.key.code) {
+        //             case sf::Keyboard::Escape:
+        //                 window.close();
+        //                 break;
+        //             case sf::Keyboard::Equal:
+        //                 scale *= 0.9;
+        //                 break;
+        //             case sf::Keyboard::Dash:
+        //                 scale /= 0.9;
+        //                 break;
+        //             case sf::Keyboard::W:
+        //                 offset_y -= 40 * scale;
+        //                 break;
+        //             case sf::Keyboard::S:
+        //                 offset_y += 40 * scale;
+        //                 break;
+        //             case sf::Keyboard::A:
+        //                 offset_x -= 40 * scale;
+        //                 break;
+        //             case sf::Keyboard::D:
+        //                 offset_x += 40 * scale;
+        //                 break;
+        //             default: break;
+        //         }
+        //     default:
+        //         break;
+        // }
+        for (int ix = 0; ix < width; ix++)
         {
-            float fps = frameCount / (currentTime - lastTime);
-            frameCount = 0;
-            lastTime = currentTime;
+            for (int iy = 0; iy < height; iy++)
+            {
+                float x = (ix - center_x) * scale + offset_x;
+                float y = (iy - center_y) * scale + offset_y;
+                int iterations = check_mandelbrot(x, y);
+                image.setPixel(ix, iy, getColor(iterations));
+            }
+        }
+        
+        if (!texture.loadFromImage(image))
+        {
+            return ERROR_OF_DRAW_PICTURE;
+        }
+
+        sprite.setTexture(texture);
+        
+        float current_time = clock.getElapsedTime().asSeconds();
+        frame_count++;
+        if (current_time - last_time >= 1.0f) 
+        {
+            float fps = frame_count / (current_time - last_time);
+            frame_count = 0;
+            last_time = current_time;
 
             std::stringstream ss;
             ss << "FPS: " << static_cast<int>(fps);
