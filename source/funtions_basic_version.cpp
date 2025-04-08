@@ -4,14 +4,10 @@
 
 #include "functions.h"
 
-const int width = 2000;
-const int height = 1600;
-const int max_iterations = 1000;
+const int width = 1200;
+const int height = 1200;
+const int max_iterations = 256;
 const int max_distance = 4;
-// const float scale = 0.003f;
-// const float scale_y = 0.003f;
-// const float offset_x = 0.0f;
-// const float offset_y = 0.0f;
 static sf::Color getColor(int iterations);
 static int check_mandelbrot(float x, float y);
 
@@ -84,12 +80,12 @@ static sf::Color getColor(int iterations)
     return sf::Color(r, g, b);
 }
 
-Errors mandelbrot_main_function()
+Errors mandelbrot_main_function_without_optimiztion()
 {
-    float scale = 0.003f;
-    float offset_x = 0.0f;
-    float offset_y = 0.0f;    
-    bool change = false;
+    double zoom_x = 4.0f;
+    double zoom_y = -4.0f;
+    double offset_x = 0.0f;
+    double offset_y = 0.0f; 
     sf::RenderWindow window(sf::VideoMode(width, height), "Mandelbrot System");
     window.setFramerateLimit(30);
 
@@ -123,47 +119,38 @@ Errors mandelbrot_main_function()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::Up: offset_y += 0.1; break;
+                    case sf::Keyboard::Down: offset_y -= 0.1; break;
+                    case sf::Keyboard::Right: offset_x -= 0.1; break;
+                    case sf::Keyboard::Left: offset_x += 0.1; break;
+                    case sf::Keyboard::Equal:
+                        if (event.key.control) 
+                        { 
+                            zoom_x *= 0.7; 
+                            zoom_y *= 0.7; 
+                        }
+                        break;
+                    case sf::Keyboard::Hyphen:
+                        if (event.key.control) 
+                        { 
+                            zoom_x *= 1.3; 
+                            zoom_y *= 1.3; 
+                        }
+                        break;
+                    default: break;
+                }
+            }
         }
-        // switch (event.type) 
-        // {
-        //     case sf::Event::Closed:
-        //         window.close();
-        //         break;
-        //     case sf::Event::KeyPressed:
-        //         change = true;
-        //         switch (event.key.code) {
-        //             case sf::Keyboard::Escape:
-        //                 window.close();
-        //                 break;
-        //             case sf::Keyboard::Equal:
-        //                 scale *= 0.9;
-        //                 break;
-        //             case sf::Keyboard::Dash:
-        //                 scale /= 0.9;
-        //                 break;
-        //             case sf::Keyboard::W:
-        //                 offset_y -= 40 * scale;
-        //                 break;
-        //             case sf::Keyboard::S:
-        //                 offset_y += 40 * scale;
-        //                 break;
-        //             case sf::Keyboard::A:
-        //                 offset_x -= 40 * scale;
-        //                 break;
-        //             case sf::Keyboard::D:
-        //                 offset_x += 40 * scale;
-        //                 break;
-        //             default: break;
-        //         }
-        //     default:
-        //         break;
-        // }
         for (int ix = 0; ix < width; ix++)
         {
             for (int iy = 0; iy < height; iy++)
             {
-                float x = (ix - center_x) * scale + offset_x;
-                float y = (iy - center_y) * scale + offset_y;
+                const double scale_x = zoom_x / (double)width;
+                const double scale_y = zoom_y / (double)height;
+                double x = (ix - center_x) * scale_x + offset_x;
+                double y = (iy - center_y) * scale_y + offset_y;
                 int iterations = check_mandelbrot(x, y);
                 image.setPixel(ix, iy, getColor(iterations));
             }

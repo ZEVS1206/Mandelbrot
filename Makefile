@@ -6,7 +6,7 @@ CC = g++
 #          -Wformat=2 -Wignored-qualifiers -Wlogical-op -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith \
 #          -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings \
 #          -Werror=vla -D_DEBUG -D_EJUDGE_CLIENT_SIDE -O3 #-I C:/SFML-3.0.0/include
-CFLAGS =  -mavx -D _DEBUG -std=c++17 -O3 -Wall -Wextra -Weffc++
+CFLAGS =  -mavx -D _DEBUG -std=c++17 -O2 -Wall -Wextra -Weffc++
 
 
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
