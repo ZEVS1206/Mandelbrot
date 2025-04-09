@@ -53,8 +53,6 @@ AVX (Advanced Vector Extensions) is a set of instructions for x86/x86-64 process
 
 ### Intel AVX functions used in the project
 
-> [!Note]
-> You need the `-mavx` flag to make it work.
 
 The table below lists the main AVX functions employed in the code:
 
