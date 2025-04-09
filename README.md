@@ -40,16 +40,14 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 > [!NOTE]
 > The speed of the program is measured in fps (frames per second).
 
-Distribution: `Ubuntu 24.10`  
-Linux version: `Linux version 6.11.0`  
+Distribution: `Linux Mint`  
 CPU: `Intel Core i7 13700H (2,4 ГГц)`  
 
 | Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `7×1`) | Vectorized (`real AVX`) |
 |----------------------|---------------|---------------|----------------------------------|----------------------------------|------------------------|
 | `g++ -O2`           | 22-23         | 39            | 52-53                            | 17                               | 59-60                  |
 | `g++ -O3`           | 23            | 50-51         | 47-48                            | 42                               | 60-61                  |
-| `clang++ -O2`       | 21-22         | 53            | 59-60                            | 78-79                            | 60-61                  |
-| `clang++ -O3`       | 22            | 53            | 58-60                            | 81                               | 60                     |
+
 
 ![Diagram](imgs/fpsDiagram.svg)
 
