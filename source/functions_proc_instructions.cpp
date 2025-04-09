@@ -13,6 +13,11 @@ const int size = 4;
 static sf::Color getColor(int iterations);
 static void check_mandelbrot(double *X, double *Y, double *N);
 
+inline uint64_t rdtsc() 
+{
+    return __rdtsc();
+}
+
 static void check_mandelbrot(double *X, double *Y, double *N)
 {
     __m256d x = _mm256_loadu_pd(X);
@@ -121,10 +126,11 @@ Errors mandelbrot_main_function_instructions()
     sf::Clock clock;
     double last_time = 0;
     int frame_count = 0;
-
+    uint64_t total_ticks = 0;
 
     while (window.isOpen()) 
     {
+        uint64_t start_ticks = rdtsc();
         sf::Event event;
         while (window.pollEvent(event)) 
         {
@@ -182,17 +188,24 @@ Errors mandelbrot_main_function_instructions()
         }
 
         sprite.setTexture(texture);
+
+        uint64_t end_ticks = rdtsc();
+        uint64_t frame_ticks = end_ticks - start_ticks;
+        total_ticks += frame_ticks;
         
         double current_time = clock.getElapsedTime().asSeconds();
         frame_count++;
         if (current_time - last_time >= 1.0f) 
         {
             double fps = frame_count / (current_time - last_time);
+            float avg_ticks_per_frame = static_cast<float>(total_ticks) / frame_count;
             frame_count = 0;
+            total_ticks = 0;
             last_time = current_time;
 
             std::stringstream ss;
-            ss << "FPS: " << static_cast<int>(fps);
+            ss << "FPS: " << static_cast<int>(fps) << "\n";
+            ss << "Ticks/frame: " << static_cast<uint64_t>(avg_ticks_per_frame);
             fpsText.setString(ss.str());
         }
 

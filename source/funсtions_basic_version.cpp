@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <sstream>
+#include <immintrin.h>
 
 #include "functions.h"
 
@@ -10,6 +11,11 @@ const int max_iterations = 256;
 const int max_distance = 4;
 static sf::Color getColor(int iterations);
 static int check_mandelbrot(float x, float y);
+
+inline uint64_t rdtsc() 
+{
+    return __rdtsc();
+}
 
 static int check_mandelbrot(float x, float y)
 {
@@ -111,9 +117,12 @@ Errors mandelbrot_main_function_without_optimiztion()
     sf::Clock clock;
     float last_time = 0;
     int frame_count = 0;
+    uint64_t total_ticks = 0;
 
 
     while (window.isOpen()) {
+        uint64_t start_ticks = rdtsc();
+        
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -126,15 +135,13 @@ Errors mandelbrot_main_function_without_optimiztion()
                     case sf::Keyboard::Right: offset_x -= 0.1; break;
                     case sf::Keyboard::Left: offset_x += 0.1; break;
                     case sf::Keyboard::Equal:
-                        if (event.key.control) 
-                        { 
+                        if (event.key.control) { 
                             zoom_x *= 0.7; 
                             zoom_y *= 0.7; 
                         }
                         break;
                     case sf::Keyboard::Hyphen:
-                        if (event.key.control) 
-                        { 
+                        if (event.key.control) { 
                             zoom_x *= 1.3; 
                             zoom_y *= 1.3; 
                         }
@@ -143,10 +150,9 @@ Errors mandelbrot_main_function_without_optimiztion()
                 }
             }
         }
-        for (int ix = 0; ix < width; ix++)
-        {
-            for (int iy = 0; iy < height; iy++)
-            {
+
+        for (int ix = 0; ix < width; ix++) {
+            for (int iy = 0; iy < height; iy++) {
                 const double scale_x = zoom_x / (double)width;
                 const double scale_y = zoom_y / (double)height;
                 double x = (ix - center_x) * scale_x + offset_x;
@@ -156,23 +162,29 @@ Errors mandelbrot_main_function_without_optimiztion()
             }
         }
         
-        if (!texture.loadFromImage(image))
-        {
+        if (!texture.loadFromImage(image)) {
             return ERROR_OF_DRAW_PICTURE;
         }
 
         sprite.setTexture(texture);
         
+        uint64_t end_ticks = rdtsc();
+        uint64_t frame_ticks = end_ticks - start_ticks;
+        total_ticks += frame_ticks;
+
         float current_time = clock.getElapsedTime().asSeconds();
         frame_count++;
-        if (current_time - last_time >= 1.0f) 
-        {
+        if (current_time - last_time >= 1.0f) {
             float fps = frame_count / (current_time - last_time);
+            float avg_ticks_per_frame = static_cast<float>(total_ticks) / frame_count;
+            
             frame_count = 0;
+            total_ticks = 0;
             last_time = current_time;
 
             std::stringstream ss;
-            ss << "FPS: " << static_cast<int>(fps);
+            ss << "FPS: " << static_cast<int>(fps) << "\n";
+            ss << "Ticks/frame: " << static_cast<uint64_t>(avg_ticks_per_frame);
             fpsText.setString(ss.str());
         }
 
