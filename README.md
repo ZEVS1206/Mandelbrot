@@ -38,7 +38,7 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 | `clang++ -O2`       | 109.76 +- 2.77 | 55.12 +- 6.43 | 45.07 +- 3.15 | 33.35 +- 2.89 | 45.88 +- 4.16 |
 | `clang++ -O3`       | 111.23 +- 2.69 | 54.34 +- 5.75 | 47.05 +- 3.47 | 32.94 +- 3.38 | 45.49 +- 4.63 |
 
-![Diagram](imgs/cpuTicksDiagram.svg)
+![Diagram](images_for_research/cpuTicksDiagram.svg)
 
 ### FPS (compiler & prog versions)
 
