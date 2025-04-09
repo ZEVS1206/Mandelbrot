@@ -30,8 +30,6 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 |----------------------|---------------|---------------|---------------|---------------|---------------|
 | `g++ -O2`           | 108.08 +- 3.13 | 70.60 +- 5.23 | 54.28 +- 7.75 | 50.76 +- 6.78 | 46.35 +- 3.94 |
 | `g++ -O3`           | 107.59 +- 2.11 | 61.88 +- 8.63 | 59.10 +- 6.63 | 72.31 +- 6.81 | 47.58 +- 5.39 |
-| `clang++ -O2`       | 109.76 +- 2.77 | 55.12 +- 6.43 | 45.07 +- 3.15 | 33.35 +- 2.89 | 45.88 +- 4.16 |
-| `clang++ -O3`       | 111.23 +- 2.69 | 54.34 +- 5.75 | 47.05 +- 3.47 | 32.94 +- 3.38 | 45.49 +- 4.63 |
 
 ![Diagram](images_for_research/cpuTicksDiagram.svg)
 
@@ -40,27 +38,16 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 > [!NOTE]
 > The speed of the program is measured in fps (frames per second).
 
-Distribution: `Ubuntu 24.10`  
-Linux version: `Linux version 6.11.0`  
-CPU: `Intel Core i5 9300H (2.40 GHz)`  
+Distribution: `Linux Mint`  
+CPU: `Intel Core i7 13700H (2,4 ГГц)`  
 
 | Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `7×1`) | Vectorized (`real AVX`) |
 |----------------------|---------------|---------------|----------------------------------|----------------------------------|------------------------|
 | `g++ -O2`           | 22-23         | 39            | 52-53                            | 17                               | 59-60                  |
 | `g++ -O3`           | 23            | 50-51         | 47-48                            | 42                               | 60-61                  |
-| `clang++ -O2`       | 21-22         | 53            | 59-60                            | 78-79                            | 60-61                  |
-| `clang++ -O3`       | 22            | 53            | 58-60                            | 81                               | 60                     |
+
 
 ![Diagram](imgs/fpsDiagram.svg)
-  
-CPU: `Ryzen 9 5900H (4.60 GHz)`
-
-| Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `7×1`) | Vectorized (`real AVX`) |
-|----------------------|---------------|---------------|----------------------------------|----------------------------------|------------------------|
-| `g++ -O2`           | 35         | 52-53            |  84-86                        | 26                                 | 86-87                  |
-| `g++ -O3`           | 35            | 75        | 61-62                             | 57-58                              | 89-90                  |
-| `clang++ -O2`       | 33-34         | 79-80            | 88-89                      | 106-107                            | 93                     |
-| `clang++ -O3`       | 34            | 79-80            | 88-89                      | 107                                | 91                     |
 
 ## AVX acceleration
 
