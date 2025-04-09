@@ -7,7 +7,6 @@
    - [CPU ticks (compiler & prog versions)](#cpu-ticks-compiler--prog-versions)
    - [FPS (compiler & prog versions)](#fps-compiler--prog-versions)
 3. [AVX acceleration](#avx-acceleration)
-   - [How it works](#how-it-works)
    - [Intel AVX functions used in the project](#intel-avx-functions-used-in-the-project)
 
 ## Description
@@ -16,12 +15,9 @@ The Mandelbrot project was created to show how much you can influence code optim
 help of different optimizations, in particular, vectorization is realized here.  
 The project consists of three parts:  
 
-1. A naive [version](src/buterbrod_spd0.cpp) of Mandelbrot set drawing.
-2. The [first version](src/buterbrod_spd1.cpp) of the vectorization implementation.
-3. The [second version](src/buterbrod_spd2.0.cpp) or another [second version](src/buterbrod_spd2myIntr.cpp)  
-with my inline intrinsics of the vectorization implementation, sweep factor 4×1.
-4. The [third version](src/buterbrod_spd2.1.cpp) of the vectorization implementation, sweep factor 7×1.
-5. The [final version](src/buterbrod_spd3trueIntr.cpp) of the vectorization implementation with real  
+1. A [null_version](source/functions_basic_version.cpp) of Mandelbrot set drawing.
+2. The [first version](source/functions_array_version.cpp) of the vectorization implementation by adding arrays of size 4x1.
+5. The [final version](source/functions_proc_instructions.cpp) of the vectorization implementation with real  
 intrinsics library `<immintrin.h>`.
 
 ## Execution speed
