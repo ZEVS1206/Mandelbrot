@@ -47,7 +47,7 @@ CPU: `Intel Core i7 13700H (2,4 ГГц)`
 | `g++ -O3`           | 23            | 50-51         | 47-48                            | 42                               | 60-61                  |
 
 
-![Diagram](imgs/fpsDiagram.svg)
+![Diagram](imgs/fps.png)
 
 ## AVX acceleration
 
