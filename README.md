@@ -26,25 +26,23 @@ intrinsics library `<immintrin.h>`.
 
 Table shows `CPU ticks * 10^6` for each version of the program with different compilators.
 
-| Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `8×1`) | Vectorized (`real AVX`) |
-|----------------------|---------------|---------------|---------------|---------------|---------------|
-| `g++ -O2`           | 108.08 +- 3.13 | 70.60 +- 5.23 | 54.28 +- 7.75 | 50.76 +- 6.78 | 46.35 +- 3.94 |
-| `g++ -O3`           | 107.59 +- 2.11 | 61.88 +- 8.63 | 59.10 +- 6.63 | 72.31 +- 6.81 | 47.58 +- 5.39 |
+| Compiler Flags       | Null Version  | First Version   | Vectorized (`real AVX`) |
+|----------------------|---------------|--------------   |-------------------------|
+| `g++ -O2`           | 326.45 +- 5.68 | 180.63 +- 5.23  | 116.93 +- 2.37          |
+| `g++ -O3`           | 324.59 +- 2.11 | 155.88 +- 3.63  | 119.58 +- 5.39          |
 
 ![Diagram](images_for_research/cpuTicksDiagram.svg)
 
 ### FPS (compiler & prog versions)
 
-> [!NOTE]
-> The speed of the program is measured in fps (frames per second).
 
 Distribution: `Linux Mint`  
 CPU: `Intel Core i7 13700H (2,4 ГГц)`  
 
-| Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `7×1`) | Vectorized (`real AVX`) |
-|----------------------|---------------|---------------|----------------------------------|----------------------------------|------------------------|
-| `g++ -O2`           | 22-23         | 39            | 52-53                            | 17                               | 59-60                  |
-| `g++ -O3`           | 23            | 50-51         | 47-48                            | 42                               | 60-61                  |
+| Compiler Flags       | Null Version | First Version | Vectorized (`real AVX`) |
+|----------------------|--------------|---------------|------------------------ |
+| `g++ -O2`            | 7-8          | 17-18         | 22-23                   |
+| `g++ -O3`            | 8-9          | 17-18         | 23-24                   |
 
 
 ![Diagram](images_for_research/fps.png)
