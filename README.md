@@ -6,8 +6,7 @@
 2. [Execution speed](#execution-speed)
    - [CPU ticks (compiler & prog versions)](#cpu-ticks-compiler--prog-versions)
    - [FPS (compiler & prog versions)](#fps-compiler--prog-versions)
-3. [Profiler](#profiler)
-4. [AVX acceleration](#avx-acceleration)
+3. [AVX acceleration](#avx-acceleration)
    - [How it works](#how-it-works)
    - [Intel AVX functions used in the project](#intel-avx-functions-used-in-the-project)
 
@@ -67,66 +66,9 @@ CPU: `Ryzen 9 5900H (4.60 GHz)`
 | `clang++ -O2`       | 33-34         | 79-80            | 88-89                      | 106-107                            | 93                     |
 | `clang++ -O3`       | 34            | 79-80            | 88-89                      | 107                                | 91                     |
 
-### Profiler
-
-Сpu ticks were measured using a simple profiler written by me to quickly calculate cpu ticks and the random error of the measured value as of the variance of the deviation.
-
-The formula for the variance of deviation:
-
-![Formula](imgs/deviation.png)
-
-You can enable the profiler by using the -DON_STAT flag, and inserting a piece of code into your file:
-
-```cpp
-#ifdef ON_STAT
-    #include "profiler.h"
-    #define PROFILE_START_(name) profileStart(name);
-    #define PROFILE_END_(name) profileEnd(name);
-    #define PROFILE_SET_LIMIT_(limit) setProfileLimit(limit);
-    #define PROFILE_INFO_ printStats();
-#else
-    #define PROFILE_START_(name)
-    #define PROFILE_END_(name)
-    #define PROFILE_SET_LIMIT_(limit)
-    #define PROFILE_INFO_
-#endif
-```
-
-In such a case, you can adjust the number of measurements of a piece of code like this:
-
-```cpp
-PROFILE_SET_LIMIT_(1000)
-```
-
-That would set a measurement limit of 1,000 pieces.  
-To measure a piece of code you have to wrap it in the following:
-
-```cpp
-PROFILE_START_("funcName")
-// function code
-PROFILE_END_("funcName")
-```
-
-And the output of the statistics:
-
-```cpp
-PROFILE_INFO_
-```
-
-After that, you will see the following:
-
-![progressBar](imgs/progressBar.gif)
-
 ## AVX acceleration
 
 AVX (Advanced Vector Extensions) is a set of instructions for x86/x86-64 processors that enables parallel computations on multiple data points simultaneously (SIMD — Single Instruction, Multiple Data). In this program, AVX is utilized to accelerate Mandelbrot set calculations by processing 4 `double` values in a single operation.
-
-### How it works
-
-We reduce the number of iterations by sweeping cycles in a single iteration. We work with 4 points on the x-axis at once. This reduces the number of iterations from 600\*800 = 480000 to 600\*200 = 120000, which significantly improves the performance of the program.
-
-![fastInit](imgs/fastInit.svg)
-![cycleSweep](imgs/cycleSweep.svg)
 
 ### Intel AVX functions used in the project
 
