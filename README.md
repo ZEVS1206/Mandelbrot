@@ -41,10 +41,10 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 Distribution: `Linux Mint`  
 CPU: `Intel Core i7 13700H (2,4 ГГц)`  
 
-| Compiler Flags       | Naive Version | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`no real AVX`, `7×1`) | Vectorized (`real AVX`) |
+| Compiler Flags       | First Version | Vectorized (`no real AVX`, `4×1`) | Vectorized (`real AVX`) |
 |----------------------|---------------|---------------|----------------------------------|----------------------------------|------------------------|
-| `g++ -O2`           | 22-23         | 39            | 52-53                            | 17                               | 59-60                  |
-| `g++ -O3`           | 23            | 50-51         | 47-48                            | 42                               | 60-61                  |
+| `g++ -O2`           | 8-9            | 17-18                             | 22-23                  |
+| `g++ -O3`           | 9-10           | 17-18                             | 23-24                  |
 
 
 ![Diagram](images_for_research/fpsDiagram.svg)
