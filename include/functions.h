@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include "constants.h"
+
 enum Errors
 {
     NO_ERRORS             = 0,
@@ -11,7 +13,7 @@ enum Errors
 Errors mandelbrot_main_function_without_optimiztion();
 Errors mandelbrot_main_function_arrays();
 Errors mandelbrot_main_function_instructions();
+sf::Color get_color(int iterations);
 
-//void sprite_moving(); 
 
 #endif

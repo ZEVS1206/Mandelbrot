@@ -5,16 +5,7 @@
 
 #include "functions.h"
 
-const int width = 1200;
-const int height = 1200;
-const int max_iterations = 256;
-const int max_distance = 4;
-const int size = 4;
-// const double scale = 0.003f;
-// const double scale_y = 0.003f;
-// const double offset_x = 0.0f;
-// const double offset_y = 0.0f;
-static sf::Color getColor(int iterations);
+
 static void check_mandelbrot(double *X, double *Y, int *N);
 
 inline uint64_t rdtsc() 
@@ -70,24 +61,6 @@ static void check_mandelbrot(double *X, double *Y, int *N)
         {
             break;
         }
-        // if (!mask)
-        // {
-        //     for (int j = 0; j < size; j++)
-        //     {
-        //         N[j] = max_iterations;
-        //     }
-        //     return;
-        // }
-
-        // for (int i = 0; i < size; i++)
-        // {
-        //     if (mask & (1 << i)) 
-        //     {
-        //         N[i]++;
-        //         X[i] = X2[i] - Y2[i] + start_x[i];
-        //         Y[i] = XY2[i] + start_y;
-        //     }
-        // }
 
     }
 
@@ -103,52 +76,15 @@ static void check_mandelbrot(double *X, double *Y, int *N)
     return;
 }
 
-static sf::Color getColor(int iterations) 
-{
-    int r = 0;
-    int g = 0;
-    int b = 0;
 
-    if (iterations == max_iterations) {
-        r = 0;
-        g = 0;
-        b = 0;
-    } else if (iterations == 0) {
-        r = 255;
-        g = 0;
-        b = 0;
-    } else {
-        // colour gradient:      Red -> Blue -> Green -> Red -> Black
-        // corresponding values:  0  ->  16  ->  64   -> 128  ->  256 (or -1)
-        if (iterations < 16) {
-            r = 16 * (16 - iterations);
-            g = 0;
-            b = 16 * iterations - 1;
-        } else if (iterations < 64) {
-            r = 0;
-            g = 16 * (iterations - 16);
-            b = 16 * (64 - iterations) - 1;
-        } else if (iterations < 128) {
-            r = 8 * (iterations - 64);
-            g = 8 * (128 - iterations) - 1;
-            b = 0;
-        } else { // range is 128 - 256
-            r = 255 - (iterations - 128) * 4;
-            g = 0;
-            b = 0;
-        }
-    }
-
-    return sf::Color(r, g, b);
-}
 
 Errors mandelbrot_main_function_arrays()
 {
-    //double scale = 0.003f;
     double zoom_x = 4.0f;
     double zoom_y = -4.0f;
     double offset_x = 0.0f;
-    double offset_y = 0.0f;    
+    double offset_y = 0.0f; 
+       
     sf::RenderWindow window(sf::VideoMode(width, height), "Mandelbrot System");
     window.setFramerateLimit(30);
 
@@ -162,8 +98,7 @@ Errors mandelbrot_main_function_arrays()
 
     sf::Texture texture;
     sf::Sprite sprite;
-    double center_x = width / 2;
-    double center_y = height / 2;
+    
 
     sf::Text fpsText;
     fpsText.setFont(font);
@@ -227,7 +162,7 @@ Errors mandelbrot_main_function_arrays()
                 for (int i = 0; i < size; i++)
                 {
                     int iterations = N[i];
-                    image.setPixel(ix + i, iy, getColor(iterations));
+                    image.setPixel(ix + i, iy, get_color(iterations));
                 }
             }
         }

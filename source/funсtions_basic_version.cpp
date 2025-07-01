@@ -4,11 +4,6 @@
 #include <immintrin.h>
 
 #include "functions.h"
-
-const int width = 1200;
-const int height = 1200;
-const int max_iterations = 256;
-const int max_distance = 4;
 static sf::Color getColor(int iterations);
 static int check_mandelbrot(float x, float y);
 
@@ -105,8 +100,6 @@ Errors mandelbrot_main_function_without_optimiztion()
 
     sf::Texture texture;
     sf::Sprite sprite;
-    float center_x = width / 2;
-    float center_y = height / 2;
 
     sf::Text fpsText;
     fpsText.setFont(font);
@@ -120,28 +113,34 @@ Errors mandelbrot_main_function_without_optimiztion()
     uint64_t total_ticks = 0;
 
 
-    while (window.isOpen()) {
+    while (window.isOpen()) 
+    {
         uint64_t start_ticks = rdtsc();
         
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == sf::Event::Closed) 
+            {
                 window.close();
             }
-            if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
+            if (event.type == sf::Event::KeyPressed) 
+            {
+                switch (event.key.code) 
+                {
                     case sf::Keyboard::Up: offset_y += 0.1; break;
                     case sf::Keyboard::Down: offset_y -= 0.1; break;
                     case sf::Keyboard::Right: offset_x -= 0.1; break;
                     case sf::Keyboard::Left: offset_x += 0.1; break;
                     case sf::Keyboard::Equal:
-                        if (event.key.control) { 
+                        if (event.key.control) 
+                        { 
                             zoom_x *= 0.7; 
                             zoom_y *= 0.7; 
                         }
                         break;
                     case sf::Keyboard::Hyphen:
-                        if (event.key.control) { 
+                        if (event.key.control) 
+                        { 
                             zoom_x *= 1.3; 
                             zoom_y *= 1.3; 
                         }
@@ -151,8 +150,10 @@ Errors mandelbrot_main_function_without_optimiztion()
             }
         }
 
-        for (int ix = 0; ix < width; ix++) {
-            for (int iy = 0; iy < height; iy++) {
+        for (int ix = 0; ix < width; ix++) 
+        {
+            for (int iy = 0; iy < height; iy++) 
+            {
                 const double scale_x = zoom_x / (double)width;
                 const double scale_y = zoom_y / (double)height;
                 double x = (ix - center_x) * scale_x + offset_x;
@@ -162,7 +163,8 @@ Errors mandelbrot_main_function_without_optimiztion()
             }
         }
         
-        if (!texture.loadFromImage(image)) {
+        if (!texture.loadFromImage(image)) 
+        {
             return ERROR_OF_DRAW_PICTURE;
         }
 
@@ -174,7 +176,8 @@ Errors mandelbrot_main_function_without_optimiztion()
 
         float current_time = clock.getElapsedTime().asSeconds();
         frame_count++;
-        if (current_time - last_time >= 1.0f) {
+        if (current_time - last_time >= 1.0f) 
+        {
             float fps = frame_count / (current_time - last_time);
             float avg_ticks_per_frame = static_cast<float>(total_ticks) / frame_count;
             
@@ -195,116 +198,3 @@ Errors mandelbrot_main_function_without_optimiztion()
     }
     return NO_ERRORS;
 }
-
-// void sprite_moving() 
-// {
-//     sf::RenderWindow window(sf::VideoMode(1024, 1024), "SFML Sprite Movement");
-
-    
-//     // sf::Texture texture;
-//     // if (!texture.loadFromFile("source/car_2.png")) {
-//     //     return; 
-//     // }
-
-//     sf::Font font;
-//     if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
-//         return;
-//     }
-
-//     sf::Text fpsText;
-//     fpsText.setFont(font);
-//     fpsText.setCharacterSize(24);
-//     fpsText.setFillColor(sf::Color::White);
-//     fpsText.setPosition(10, 10);
-
-//     sf::Clock clock;
-//     float lastTime = 0;
-//     int frameCount = 0;
-    
-//     // sf::Sprite sprite(texture);
-//     // sprite.setPosition(400, 300); 
-//     // float speed = 5.0f; 
-
-//     while (window.isOpen()) {
-//         sf::Event event;
-//         while (window.pollEvent(event)) 
-//         {
-//             if (event.type == sf::Event::Closed) 
-//             {
-//                 window.close();
-//             }
-//         }
-
-        
-//         // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) 
-//         // {
-//         //     sprite.move(-speed, 0);
-//         // }
-//         // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) 
-//         // {
-//         //     sprite.move(speed, 0);
-//         // }
-//         // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
-//         // {
-//         //     sprite.move(0, -speed);
-//         // }
-//         // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) 
-//         // {
-//         //     sprite.move(0, speed);
-//         // }
-
-//         float currentTime = clock.getElapsedTime().asSeconds();
-//         frameCount++;
-//         if (currentTime - lastTime >= 1.0f) 
-//         {
-//             float fps = frameCount / (currentTime - lastTime);
-//             frameCount = 0;
-//             lastTime = currentTime;
-
-//             std::stringstream ss;
-//             ss << "FPS: " << static_cast<int>(fps);
-//             fpsText.setString(ss.str());
-//         }
-
-//         window.clear();
-//         //window.draw(sprite);
-//         window.draw(fpsText);
-//         window.display();
-//     }
-
-//     return;
-// }
-
-// sf::RenderWindow window(sf::VideoMode(1200, 1000), "SFML Points Example");
-
-    // // Создаем массив точек (тип sf::Points)
-    // sf::VertexArray points(sf::Points, 5);
-
-    // // Устанавливаем позиции и цвета точек
-    // points[0].position = sf::Vector2f(100, 100);
-    // points[0].color = sf::Color::Red;
-
-    // points[1].position = sf::Vector2f(200, 150);
-    // points[1].color = sf::Color::Green;
-
-    // points[2].position = sf::Vector2f(300, 200);
-    // points[2].color = sf::Color::Blue;
-
-    // points[3].position = sf::Vector2f(400, 250);
-    // points[3].color = sf::Color::Yellow;
-
-    // points[4].position = sf::Vector2f(500, 300);
-    // points[4].color = sf::Color::Magenta;
-
-    // while (window.isOpen()) {
-    //     sf::Event event;
-    //     while (window.pollEvent(event)) {
-    //         if (event.type == sf::Event::Closed) {
-    //             window.close();
-    //         }
-    //     }
-
-    //     window.clear();
-    //     window.draw(points); // Рисуем точки
-    //     window.display();
-    // }
