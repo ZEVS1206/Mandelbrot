@@ -31,7 +31,7 @@ Table shows `CPU ticks * 10^6` for each version of the program with different co
 | `g++ -O2`           | 326.45 +- 5.68 | 180.63 +- 5.23  | 116.93 +- 2.37          |
 | `g++ -O3`           | 324.59 +- 2.11 | 155.88 +- 3.63  | 119.58 +- 5.39          |
 
-![Diagram](images_for_research/cpuTicksDiagram.svg)
+![Diagram](images_for_research/cpu_ticks.png)
 
 ### FPS (compiler & prog versions)
 
@@ -53,8 +53,6 @@ AVX (Advanced Vector Extensions) is a set of instructions for x86/x86-64 process
 
 ### Intel AVX functions used in the project
 
-> [!Note]
-> You need the `-mavx` flag to make it work.
 
 The table below lists the main AVX functions employed in the code:
 
